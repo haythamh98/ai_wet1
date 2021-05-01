@@ -26,8 +26,9 @@ class TimeBasedAirDistHeuristic(HeuristicFunction):
         """
         assert isinstance(self.problem, MapProblem)
         assert isinstance(state, MapState)
-
-        raise NotImplementedError  # TODO: remove this line!
+        air_dist = self.problem.streets_map[state.junction_id].calc_air_distance_from(
+            self.problem.streets_map[self.problem.target_junction_id])
+        return air_dist/MAX_ROADS_SPEED
 
 
 class ShortestPathsBasedHeuristic(HeuristicFunction):

@@ -47,7 +47,7 @@ class AStar(BestFirstSearch):
         Remember: In Weighted-A* the f-score is defined by ((1-w) * cost) + (w * h(state)).
         Notice: You may use `search_node.g_cost`, `self.heuristic_weight`, and `self.heuristic_function`.
         """
-        h_value = 0  # self.heuristic_function. TODO: find how to get heuristic value
+        h_value = self.heuristic_function.estimate(search_node.state)
         f_value = ((1 - self.heuristic_weight) * search_node.g_cost) + self.heuristic_weight * h_value
         return f_value
 
@@ -69,37 +69,15 @@ class AStar(BestFirstSearch):
                   but still could be improved.
         """
         # haitam:
-
-        if self.close.has_state(successor_node.state):
-            if self.close.get_node_by_state(
-                    successor_node.state).expanding_priority > successor_node.expanding_priority:
-                # closed with a bad value, re-insert it to open, and re-insert its neighbors, then return
-                # re-insert node
-                self.close.remove_node(self.close.get_node_by_state(successor_node.state))
-                self.open.push_node(successor_node)
-                # re-insert neighbors
-                for operator_result in problem.expand_state_with_costs(successor_node.state):
-                    if self.open.has_state(operator_result.successor_state):
-                        self.open.extract_node(self.open.get_node_by_state(operator_result.successor_state))
-                    if self.close.has_state(operator_result.successor_state):
-                        self.close.remove_node(self.close.get_node_by_state(operator_result.successor_state))
-                    self.open.push_node(successor_node)
-            return  # Done
-
         if self.open.has_state(successor_node.state):
-            state_with_old_g = self.open.get_node_by_state(successor_node.state)
-            if state_with_old_g.expanding_priority > successor_node.expanding_priority:  # pop, then re-insert node and its neighbors
-                # re-insert node
-                self.open.extract_node(state_with_old_g)
+            old_opened_node = self.open.get_node_by_state(successor_node.state)
+            if old_opened_node.g_cost > successor_node.g_cost:  # update to a better value state
+                self.open.extract_node(old_opened_node)
                 self.open.push_node(successor_node)
-                # re-insert neighbors
-                for operator_result in problem.expand_state_with_costs(successor_node.state):
-                    if self.open.has_state(operator_result.successor_state):
-                        self.open.extract_node(self.open.get_node_by_state(operator_result.successor_state))
-                    if self.close.has_state(operator_result.successor_state):
-                        self.close.remove_node(self.close.get_node_by_state(operator_result.successor_state))
-                    self.open.push_node(successor_node)
-            else:  # no change needed, we already opened it with better value
-                return
-        else:  # its not open, just push it, and continue life
+        elif self.close.has_state(successor_node.state):
+            old_closed_node = self.close.get_node_by_state(successor_node.state)
+            if old_closed_node.g_cost > successor_node.g_cost:  # found better value, extraxt from close, re-insert to open
+                self.close.remove_node(old_closed_node)
+                self.open.push_node(successor_node)
+        else:
             self.open.push_node(successor_node)

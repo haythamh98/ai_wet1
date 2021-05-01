@@ -77,15 +77,16 @@ class Link:
     def get_symmetric_hash(self):
         return hash(frozenset((self.source, self.target)))
     
-    # TODO [Ex.8]:
+    # [Ex.8]:
     # Compute and return the current driving time based on the given current_speed
     def compute_scheduled_time(self):
-        raise NotImplementedError  # TODO: remove this line!
+        return self.distance / self.max_speed
 
-    # TODO [Ex.8]:
+    # [Ex.8]:
     # Compute and return the current driving time based on the given current_speed
     def compute_current_time(self):
-        raise NotImplementedError  # TODO: remove this line!
+        return self.distance / self.current_speed
+
 
 
 @dataclass
