@@ -39,7 +39,7 @@ class AStarEpsilon(AStar):
         Extracts the next node to expand from the open queue,
          by focusing on the current FOCAL and choosing the node
          with the best within_focal_priority from it.
-        TODO [Ex.28]: Implement this method!
+         [Ex.28]: Implement this method!
         Find the minimum expanding-priority value in the `open` queue.
         Calculate the maximum expanding-priority of the FOCAL, which is
          the min expanding-priority in open multiplied by (1 + eps) where
@@ -50,10 +50,14 @@ class AStarEpsilon(AStar):
         Notice: You might want to pop items from the `open` priority queue,
          and then choose an item out of these popped items. Don't forget:
          the other items have to be pushed back into open.
+
+
         Inspect the base class `BestFirstSearch` to retrieve the type of
          the field `open`. Then find the definition of this type and find
          the right methods to use (you might want to peek the head node, to
          pop/push nodes and to query whether the queue is empty).
+
+
         Remember that `open` is a priority-queue sorted by `f` in an ascending
          order (small to big). Popping / peeking `open` returns the node with
          the smallest `f`.
@@ -71,5 +75,31 @@ class AStarEpsilon(AStar):
          method should be kept in the open queue at the end of this method, except
          for the extracted (and returned) node.
         """
+        if self.open.is_empty():
+            return None
 
-        raise NotImplementedError  # TODO: remove!
+        min_expanding_priority = self.open.peek_next_node().expanding_priority
+        max_focal = min_expanding_priority *(1+self.focal_epsilon)
+
+        focal = np.array()
+        focal_priority = np.array()
+
+        # fill focal
+        while (not self.open.is_empty()) and (self.open.peek_next_node().expanding_priority <= max_focal):
+            if self.max_focal_size is None or self.max_focal_size > len(focal):  # can be combined but cba
+                to_insert = self.open.pop_next_node()
+                np.append(focal, to_insert)
+                np.append(focal_priority, self.within_focal_priority_function(to_insert, problem, self))
+            else:
+                break
+
+        # find min in focal
+        min_index = np.argmin(focal_priority)
+        to_return = focal[min_index]
+        np.extract(focal, min_index)
+
+        # retrieve open
+        for s_node in focal:
+            self.open.push_node(s_node)
+
+        return to_return

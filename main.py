@@ -24,7 +24,6 @@ def plot_distance_and_expanded_wrt_weight_figure(
     """
     Use `matplotlib` to generate a figure of the distance & #expanded-nodes
      w.r.t. the weight.
-    TODO [Ex.20]: Complete the implementation of this method.
     """
     weights, total_cost, total_nr_expanded = np.array(weights), np.array(total_cost), np.array(total_nr_expanded)
     assert len(weights) == len(total_cost) == len(total_nr_expanded)
@@ -34,14 +33,13 @@ def plot_distance_and_expanded_wrt_weight_figure(
 
     fig, ax1 = plt.subplots()
 
-    # TODO: Plot the total distances with ax1. Use `ax1.plot(...)`.
-    # TODO: Make this curve colored blue with solid line style.
-    # TODO: Set its label to be 'Solution cost'.
+    # Plot the total distances with ax1. Use `ax1.plot(...)`.
+    # Make this curve colored blue with solid line style.
+    # : Set its label to be 'Solution cost'.
     # See documentation here:
     # https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.plot.html
     # You can also Google for additional examples.
-    raise NotImplementedError  # TODO: remove this line!
-    p1, = ax1.plot(...)  # TODO: pass the relevant params instead of `...`.
+    p1, = ax1.plot(weights, total_cost, color='blue', linestyle='solid', label='Solution cost')  # pass the relevant params instead of `...`.
 
     # ax1: Make the y-axis label, ticks and tick labels match the line color.
     ax1.set_ylabel('Solution cost', color='b')
@@ -51,12 +49,10 @@ def plot_distance_and_expanded_wrt_weight_figure(
     # Create another axis for the #expanded curve.
     ax2 = ax1.twinx()
 
-    # TODO: Plot the total expanded with ax2. Use `ax2.plot(...)`.
-    # TODO: Make this curve colored red with solid line style.
-    # TODO: Set its label to be '#Expanded states'.
-    raise NotImplementedError  # TODO: remove this line!
-    p2, = ax2.plot(...)  # TODO: pass the relevant params instead of `...`.
-
+    # Plot the total expanded with ax2. Use `ax2.plot(...)`.
+    # Make this curve colored red with solid line style.
+    # Set its label to be '#Expanded states'.
+    p2, = ax2.plot(weights, total_nr_expanded, color='red', linestyle='solid', label='#Expanded states')  # pass the relevant params instead of `...`.
     # ax2: Make the y-axis label, ticks and tick labels match the line color.
     ax2.set_ylabel('#Expanded states', color='r')
     ax2.tick_params('y', colors='r')
@@ -72,7 +68,7 @@ def plot_distance_and_expanded_wrt_weight_figure(
 def run_astar_for_weights_in_range(heuristic_type: HeuristicFunctionType, problem: GraphProblem, n: int = 30,
                                    max_nr_states_to_expand: Optional[int] = 40_000,
                                    low_heuristic_weight: float = 0.5, high_heuristic_weight: float = 0.95):
-    # TODO [Ex.20]:
+    #  [Ex.20]:
     #  1. Create an array of `n` numbers equally spread in the segment
     #     [low_heuristic_weight, high_heuristic_weight]
     #     (including the edges). You can use `np.linspace()` for that.
@@ -87,8 +83,20 @@ def run_astar_for_weights_in_range(heuristic_type: HeuristicFunctionType, proble
     #     Don't forget to pass `max_nr_states_to_expand` to the AStar c'tor.
     #  3. Call the function `plot_distance_and_expanded_wrt_weight_figure()`
     #     with these 3 generated lists.
-    raise NotImplementedError  # `TOD ad `O: remove this line!
+    numbersArr = np.linspace(low_heuristic_weight, high_heuristic_weight, n)
+    sol_cost = []
+    exp_states = []
+    itr_weight = []
+    for i in numbersArr:
+        wAstar = AStar(heuristic_type, i, max_nr_states_to_expand)
+        tmp_result = wAstar.solve_problem(problem)
+        if tmp_result.is_solution_found:
+            sol_cost.append(tmp_result.solution_g_cost)
+            exp_states.append(tmp_result.nr_expanded_states)
+            itr_weight.append(i)
 
+    # for i in range(0,len(itr_weight)): print(itr_weight[i], ' ' , exp_states[i], ' ' , sol_cost[i])
+    plot_distance_and_expanded_wrt_weight_figure(problem.name, itr_weight, sol_cost, exp_states)
 
 # --------------------------------------------------------------------
 # ------------------------ StreetsMap Problem ------------------------
@@ -154,7 +162,6 @@ def map_problem_experiments():
     astar_result = astar_solver.solve_problem(map_problem)
     print(astar_result)
 
-
     #  [Ex.18]: create an instance of `AStar` with the `TimeBasedAirDistHeuristic`,
     #       and use the default value for the heuristic_weight,
     #       solve the same `map_problem` with it and print the results (as before).
@@ -162,7 +169,7 @@ def map_problem_experiments():
     astar_air_distance_result = astar_air_distance_solver.solve_problem(map_problem)
     print(astar_air_distance_result)
 
-    # TODO [Ex.20]:
+    #  [Ex.20]:
     #  1. Complete the implementation of the function
     #     `run_astar_for_weights_in_range()` (upper in this file).
     #  2. Complete the implementation of the function
@@ -170,29 +177,35 @@ def map_problem_experiments():
     #     (upper in this file).
     #  3. Call here the function `run_astar_for_weights_in_range()`
     #     with `TimeBasedAirDistHeuristic` and `map_problem`.
-    exit()  # TODO: remove!
+    run_astar_for_weights_in_range(TimeBasedAirDistHeuristic, map_problem)
 
     # TODO [Ex.24]: 1. Call the function set_additional_shortest_paths_based_data()
     #                   to set the additional shortest-paths-based data in `map_problem`.
     #                   For more info see `problems/map_problem.py`.
     #               2. create an instance of `AStar` with the `ShortestPathsBasedHeuristic`,
     #                  solve the same `map_problem` with it and print the results (as before).
-    exit()  # TODO: remove!
+    #exit()  # TODO: remove!
 
     # TODO [Ex.25]: 1. Call the function set_additional_history_based_data()
     #                   to set the additional history-based data in `map_problem`.
     #                   For more info see `problems/map_problem.py`.
     #               2. create an instance of `AStar` with the `HistoryBasedHeuristic`,
     #                   solve the same `map_problem` with it and print the results (as before).
-    exit()  # TODO: remove!
+    #exit()  # TODO: remove!
 
     # Try using A*eps to improve the speed (#dev) with a non-acceptable heuristic.
-    # TODO [Ex.29]: Create an instance of `AStarEpsilon` with the `ShortestPathsBasedHeuristic`.
+    # [Ex.29]: Create an instance of `AStarEpsilon` with the `ShortestPathsBasedHeuristic`.
     #       Solve the `map_problem` with it and print the results.
     #       Use focal_epsilon=0.23, and max_focal_size=40.
     #       Use within_focal_priority_function=within_focal_h_sum_priority_function. This function
     #        (defined just above) is internally using the `HistoryBasedHeuristic`.
-    exit()  # TODO: remove!
+    astar_eps = AStarEpsilon(heuristic_function_type=ShortestPathsBasedHeuristic,
+                             within_focal_priority_function=within_focal_h_sum_priority_function,
+                             focal_epsilon=0.23,
+                             max_focal_size=40)
+    exit() # TODO: remove this after finish, Ex.29
+    astar_eps_result = astar_eps.solve_problem(map_problem)
+    print(astar_eps_result)
 
 
 def run_all_experiments():
