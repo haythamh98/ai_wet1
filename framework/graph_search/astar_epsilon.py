@@ -79,26 +79,27 @@ class AStarEpsilon(AStar):
             return None
 
         min_expanding_priority = self.open.peek_next_node().expanding_priority
-        max_focal = min_expanding_priority *(1+self.focal_epsilon)
+        max_focal = min_expanding_priority * (1 + self.focal_epsilon)
 
-        focal = np.array()
-        focal_priority = np.array()
-
+        focal = []
+        focal_priority = []
         # fill focal
         while (not self.open.is_empty()) and (self.open.peek_next_node().expanding_priority <= max_focal):
             if self.max_focal_size is None or self.max_focal_size > len(focal):  # can be combined but cba
                 to_insert = self.open.pop_next_node()
-                np.append(focal, to_insert)
-                np.append(focal_priority, self.within_focal_priority_function(to_insert, problem, self))
+                focal.append(to_insert)
+                focal_priority.append(self.within_focal_priority_function(to_insert, problem, self))
             else:
                 break
 
         # find min in focal
         min_index = np.argmin(focal_priority)
+        # print("Priorities = " + str(focal_priority) + "min index = " + str(min_index))
         to_return = focal[min_index]
-        np.extract(focal, min_index)
-
+        # print("poping index " + str(min_index))
+        focal.pop(int(min_index))
         # retrieve open
+        self.close.add_node(to_return)
         for s_node in focal:
             self.open.push_node(s_node)
 

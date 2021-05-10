@@ -71,7 +71,7 @@ class MapProblem(GraphProblem):
         self.time_to_goal_shortest_paths_based_data = data  # assign the data
 
     def set_additional_history_based_data(self):
-        # TODO [Ex.26]: Load additional history-based data and assign it to a class variable:
+        #  [Ex.26]: Load additional history-based data and assign it to a class variable:
         #               (1) Load the csv file history_4_days_target_{target_id}.csv to a pd.DataFrame (pandas dataframe).
         #                   Its parent folder is framework/db/ which is the same as the parent folder of shortest_paths.csv.
         #                   Use the code in self.set_additional_shortest_paths_based_data() for help!
@@ -83,8 +83,16 @@ class MapProblem(GraphProblem):
         #               (3) Assign self.time_to_goal_history_based_data the result of the mean.
         #                   Note: the result should be of type np.array.
         #                           you can convert a pd.DataFrame to np.array using pd.DataFrame.to_numpy()
-        days_of_the_week = ['Sun', 'Mon', 'Tue', 'Wed']  # optional variable
-        raise NotImplementedError  # TODO: remove this line!
+        days_of_the_week = ['Sun', 'Mon', 'Tue', 'Wed']  # optional variable # TODO: ask why is this
+        shortest_paths_file_path = os.path.join(Consts.DATA_PATH,
+                                                'history_4_days_target_' + str(self.target_junction_id) + '.csv')
+
+        # read the csv file
+        df = pd.read_csv(shortest_paths_file_path)
+
+        mean_history = df.mean(axis=1)
+
+        self.time_to_goal_history_based_data = mean_history.to_numpy()  # assign the data
 
         assert (type(self.time_to_goal_history_based_data) is np.ndarray)  # self-check
 

@@ -113,7 +113,7 @@ def toy_map_problem_experiment():
     print()
     print('Solve the distance-based map problem.')
 
-    # TODO [Ex.7]: Just run it and inspect the printed result.
+    #  [Ex.7]: Just run it and inspect the printed result.
 
     target_point = 549
     start_point = 82700
@@ -169,7 +169,7 @@ def map_problem_experiments():
     astar_air_distance_result = astar_air_distance_solver.solve_problem(map_problem)
     print(astar_air_distance_result)
 
-    #  [Ex.20]:
+    # [Ex.20]:
     #  1. Complete the implementation of the function
     #     `run_astar_for_weights_in_range()` (upper in this file).
     #  2. Complete the implementation of the function
@@ -178,20 +178,25 @@ def map_problem_experiments():
     #  3. Call here the function `run_astar_for_weights_in_range()`
     #     with `TimeBasedAirDistHeuristic` and `map_problem`.
     run_astar_for_weights_in_range(TimeBasedAirDistHeuristic, map_problem)
-
-    # TODO [Ex.24]: 1. Call the function set_additional_shortest_paths_based_data()
+    # TODO: uncomment prev line
+    # [Ex.24]: 1. Call the function set_additional_shortest_paths_based_data()
     #                   to set the additional shortest-paths-based data in `map_problem`.
     #                   For more info see `problems/map_problem.py`.
     #               2. create an instance of `AStar` with the `ShortestPathsBasedHeuristic`,
     #                  solve the same `map_problem` with it and print the results (as before).
-    #exit()  # TODO: remove!
-
-    # TODO [Ex.25]: 1. Call the function set_additional_history_based_data()
+    map_problem.set_additional_shortest_paths_based_data()
+    astar_shortest_path = AStar(ShortestPathsBasedHeuristic)
+    astar_shortest_path_result = astar_shortest_path.solve_problem(map_problem)
+    print(astar_shortest_path_result)
+    # [Ex.25]: 1. Call the function set_additional_history_based_data()
     #                   to set the additional history-based data in `map_problem`.
     #                   For more info see `problems/map_problem.py`.
     #               2. create an instance of `AStar` with the `HistoryBasedHeuristic`,
     #                   solve the same `map_problem` with it and print the results (as before).
-    #exit()  # TODO: remove!
+    map_problem.set_additional_history_based_data()
+    astar_shortest_path_histoy = AStar(HistoryBasedHeuristic)
+    astar_shortest_path_histoy_result = astar_shortest_path_histoy.solve_problem(map_problem)
+    print(astar_shortest_path_histoy_result)
 
     # Try using A*eps to improve the speed (#dev) with a non-acceptable heuristic.
     # [Ex.29]: Create an instance of `AStarEpsilon` with the `ShortestPathsBasedHeuristic`.
@@ -203,7 +208,6 @@ def map_problem_experiments():
                              within_focal_priority_function=within_focal_h_sum_priority_function,
                              focal_epsilon=0.23,
                              max_focal_size=40)
-    exit() # TODO: remove this after finish, Ex.29
     astar_eps_result = astar_eps.solve_problem(map_problem)
     print(astar_eps_result)
 
