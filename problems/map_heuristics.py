@@ -14,7 +14,7 @@ class TimeBasedAirDistHeuristic(HeuristicFunction):
         The air distance between the geographic location represented
          by `state` and the geographic location of the problem's target.
 
-        TODO [Ex.18]: implement this method!
+        [Ex.18]: implement this method!
         Use `self.problem` to access the problem.
         Use `self.problem.streets_map` to access the map.
         Use MAX_ROADS_SPEED and MIN_ROADS_SPEED to access the max_speed 

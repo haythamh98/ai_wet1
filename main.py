@@ -136,7 +136,7 @@ def map_problem_experiments():
     target_point = 549
     start_point = 82700
 
-    # TODO [Ex.12]: 1. create an instance of `MapProblem` with a current_time-based operator cost
+    # \ [Ex.12]: 1. create an instance of `MapProblem` with a current_time-based operator cost
     #           with the start point `start_point` and the target point `target_point`
     #           and name it `map_problem`.
     #       2. create an instance of `UCS`,
@@ -153,7 +153,7 @@ def map_problem_experiments():
     file_path = os.path.join(Consts.IMAGES_PATH, 'UCS_path_time_based.png')
     streets_map.visualize(path=res, file_path=file_path)
 
-    # TODO [Ex.16]: create an instance of `AStar` with the `NullHeuristic` (implemented in
+    #  [Ex.16]: create an instance of `AStar` with the `NullHeuristic` (implemented in
     #       `framework\graph_search\graph_problem_interface.py`),
     #       solve the same `map_problem` with it and print the results (as before).
     # Notice: AStar constructor receives the heuristic *type* (ex: `MyHeuristicClass`),
@@ -178,7 +178,7 @@ def map_problem_experiments():
     #  3. Call here the function `run_astar_for_weights_in_range()`
     #     with `TimeBasedAirDistHeuristic` and `map_problem`.
     run_astar_for_weights_in_range(TimeBasedAirDistHeuristic, map_problem)
-    # TODO: uncomment prev line
+
     # [Ex.24]: 1. Call the function set_additional_shortest_paths_based_data()
     #                   to set the additional shortest-paths-based data in `map_problem`.
     #                   For more info see `problems/map_problem.py`.

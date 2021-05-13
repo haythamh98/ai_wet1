@@ -83,7 +83,7 @@ class MapProblem(GraphProblem):
         #               (3) Assign self.time_to_goal_history_based_data the result of the mean.
         #                   Note: the result should be of type np.array.
         #                           you can convert a pd.DataFrame to np.array using pd.DataFrame.to_numpy()
-        days_of_the_week = ['Sun', 'Mon', 'Tue', 'Wed']  # optional variable # TODO: ask why is this
+        days_of_the_week = ['Sun', 'Mon', 'Tue', 'Wed']  # optional variable
         shortest_paths_file_path = os.path.join(Consts.DATA_PATH,
                                                 'history_4_days_target_' + str(self.target_junction_id) + '.csv')
 
@@ -118,7 +118,7 @@ class MapProblem(GraphProblem):
             elif self.cost_func_name == 'current_time':
                 yield OperatorResult(successor_state=MapState(l.target), operator_cost=l.compute_current_time())
 
-        # TODO [Ex.9]:
+        #  [Ex.9]:
         #  Read the documentation of this method in the base class `GraphProblem.expand_state_with_costs()`.
         #  Finish the implementation of this method.
         #  Iterate over the outgoing links of the current junction (find the implementation of `Junction`
@@ -140,7 +140,7 @@ class MapProblem(GraphProblem):
         """
         assert (isinstance(state, MapState))
 
-        # TODO [Ex.9]: modify the returned value to indicate whether `state` is a final state.
+        #  [Ex.9]: modify the returned value to indicate whether `state` is a final state.
         # You may use the problem's input parameters (stored as fields of this object by the constructor).
 
         if state.junction_id == self.target_junction_id:
